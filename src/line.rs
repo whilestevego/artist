@@ -1,6 +1,6 @@
 use point::*;
 
-#[derive(Default, Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct Line {
     a: Point,
     b: Point,
@@ -15,36 +15,29 @@ impl Line {
     }
 
     pub fn points(self) -> LineIter {
-        let ptr = self.a;
+        let Line { a, b } = self;
         let slope = self.slope();
 
         LineIter {
-            line: self,
+            base: a,
+            curr: Point { x: 0.0, y: 0.0 },
+            end: b - a,
             slope,
-            ptr,
         }
     }
 
     pub fn slope(&self) -> f64 {
-        let (delta_x, delta_y) = self.delta();
+        let &Line { a, b } = self;
 
-        (delta_y / delta_x).round()
-    }
-
-    fn delta(&self) -> (f64, f64) {
-        let &Line {
-            a: Point { x: xa, y: ya },
-            b: Point { x: xb, y: yb },
-        } = self;
-
-        (xb - xa, yb - ya)
+        (b.y - a.y) / (b.x - a.x)
     }
 }
 
 #[derive(Debug)]
 pub struct LineIter {
-    line: Line,
-    ptr: Point,
+    base: Point,
+    curr: Point,
+    end: Point,
     slope: f64,
 }
 
@@ -56,26 +49,26 @@ impl Iterator for LineIter {
     // https://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm)
     fn next(&mut self) -> Option<Self::Item> {
         let &mut LineIter {
-            ref line,
+            base,
+            curr,
+            end,
             slope,
-            ptr: curr,
         } = self;
-        let Line { a, b } = line;
 
         // Exit if curr is past b in any direction
-        if curr.x.abs() > b.x.abs() || curr.y.abs() > b.y.abs() {
+        if curr.x.abs() > end.x.abs() || curr.y.abs() > end.y.abs() {
             return None;
         }
 
         // Calculate and assign next self.ptr
-        self.ptr = if slope.abs() > 1.0 {
-            let step = (b.y - a.y).signum();
-            Point::from(((1.0 / slope * step) + curr.x, curr.y + step))
+        self.curr = if slope.abs() > 1.0 {
+            let step = end.y.signum();
+            Point::new((1.0 / slope * step) + curr.x, curr.y + step)
         } else {
-            let step = (b.x - a.x).signum();
-            Point::from((curr.x + step, (slope * step) + curr.y))
+            let step = end.x.signum();
+            Point::new(curr.x + step, (slope * step) + curr.y)
         };
 
-        Some(curr)
+        Some(curr + base)
     }
 }
