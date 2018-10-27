@@ -25,7 +25,7 @@ fn main() -> Result<(), Box<Error>> {
         .forward(50.0);
 
     turtle
-        .points()
+        .plot()
         .for_each(|Point { x, y }| img.put_pixel(x as u32, y as u32, Rgba([0, 0, 0, 255])));
 
     PolyLine::new(vec![(5.0, 0.0), (99.0, 5.0), (95.0, 99.0), (90.0, 5.0)])

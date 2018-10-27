@@ -53,7 +53,7 @@ impl Turtle {
                 _ => panic!("Unexpected slice size (must be length of 2)"),
             })
     }
-    pub fn points<'a>(&'a self) -> impl Iterator<Item = Point> + 'a {
-        self.lines().flat_map(|line| line.points())
+    pub fn plot<'a>(&'a self) -> impl Iterator<Item = Point> + 'a {
+        self.lines().flat_map(|line| line.plot())
     }
 }
