@@ -14,11 +14,11 @@ impl Line {
         }
     }
 
-    pub fn points(self) -> LineIter {
+    pub fn plot(self) -> LinePlot {
         let Line { a, b } = self;
         let slope = self.slope();
 
-        LineIter {
+        LinePlot {
             base: a,
             curr: Point { x: 0.0, y: 0.0 },
             end: b - a,
@@ -34,21 +34,21 @@ impl Line {
 }
 
 #[derive(Debug)]
-pub struct LineIter {
+pub struct LinePlot {
     base: Point,
     curr: Point,
     end: Point,
     slope: f64,
 }
 
-impl Iterator for LineIter {
+impl Iterator for LinePlot {
     type Item = Point;
 
     // Generates all points to draw a line following Bresenham's algorithm using DDA
     // https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
     // https://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm)
     fn next(&mut self) -> Option<Self::Item> {
-        let &mut LineIter {
+        let &mut LinePlot {
             base,
             curr,
             end,
