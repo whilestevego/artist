@@ -33,10 +33,6 @@ impl Point {
         self.y.round();
         self
     }
-
-    pub fn has_nan(&self) -> bool {
-        self.x.is_nan() || self.y.is_nan()
-    }
 }
 
 impl Add for Point {
