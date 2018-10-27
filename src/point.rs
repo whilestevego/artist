@@ -66,6 +66,15 @@ impl Sub for Point {
 
 impl From<(f64, f64)> for Point {
     fn from((x, y): (f64, f64)) -> Self {
-        Point { x, y }
+        Self { x, y }
+    }
+}
+
+impl From<(f32, f32)> for Point {
+    fn from((x, y): (f32, f32)) -> Self {
+        Self {
+            x: x as f64,
+            y: y as f64,
+        }
     }
 }
