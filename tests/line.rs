@@ -14,7 +14,7 @@ use turtle::*;
 #[test]
 fn it_creates_diagonal_line_in_first_quadrant() {
     let points = Line::new((0.0, 0.0), (3.0, 3.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     assert_eq!(
@@ -31,7 +31,7 @@ fn it_creates_diagonal_line_in_first_quadrant() {
 #[test]
 fn it_creates_diagonal_line_in_second_quadrant() {
     let points = Line::new((0.0, 0.0), (-3.0, 3.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     assert_eq!(
@@ -48,7 +48,7 @@ fn it_creates_diagonal_line_in_second_quadrant() {
 #[test]
 fn it_creates_diagonal_line_in_third_quadrant() {
     let points = Line::new((0.0, 0.0), (-3.0, -3.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     assert_eq!(
@@ -65,7 +65,7 @@ fn it_creates_diagonal_line_in_third_quadrant() {
 #[test]
 fn it_creates_diagonal_line_in_fourth_quadrant() {
     let points = Line::new((0.0, 0.0), (3.0, -3.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     assert_eq!(
@@ -82,7 +82,7 @@ fn it_creates_diagonal_line_in_fourth_quadrant() {
 #[test]
 fn it_creates_line_on_positive_x() {
     let points = Line::new((0.0, 0.0), (3.0, 0.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     assert_eq!(
@@ -99,7 +99,7 @@ fn it_creates_line_on_positive_x() {
 #[test]
 fn it_creates_line_on_positive_y() {
     let points = Line::new((0.0, 0.0), (0.0, 3.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     assert_eq!(
@@ -116,7 +116,7 @@ fn it_creates_line_on_positive_y() {
 #[test]
 fn it_creates_line_on_negative_x() {
     let points = Line::new((0.0, 0.0), (-3.0, 0.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     assert_eq!(
@@ -133,7 +133,7 @@ fn it_creates_line_on_negative_x() {
 #[test]
 fn it_creates_line_on_negative_y() {
     let points = Line::new((0.0, 0.0), (0.0, -3.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     assert_eq!(
@@ -150,7 +150,7 @@ fn it_creates_line_on_negative_y() {
 #[test]
 fn it_creates_diagonal_line_from_third_to_first_quadrant() {
     let points = Line::new((-3.0, -3.0), (3.0, 3.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     assert_eq!(
@@ -170,7 +170,7 @@ fn it_creates_diagonal_line_from_third_to_first_quadrant() {
 #[test]
 fn it_creates_diagonal_line_from_first_to_third_quadrant() {
     let points = Line::new((3.0, 3.0), (-3.0, -3.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     assert_eq!(
@@ -190,7 +190,7 @@ fn it_creates_diagonal_line_from_first_to_third_quadrant() {
 #[test]
 fn it_creates_lines_in_arbitrary_angles() {
     let points = Line::new((1.0, 2.0), (3.0, 10.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     assert_eq!(
@@ -212,11 +212,11 @@ fn it_creates_lines_in_arbitrary_angles() {
 #[test]
 fn it_creates_same_points_for_mirrored_lines() {
     let points = Line::new((-3.0, -3.0), (3.0, 3.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     let mut points_mirrored = Line::new((3.0, 3.0), (-3.0, -3.0))
-        .points()
+        .plot()
         .collect::<Vec<_>>();
 
     points_mirrored.sort();
