@@ -41,6 +41,17 @@ pub struct LinePlot {
     slope: f64,
 }
 
+impl LinePlot {
+    pub fn merge(&mut self, line_plot: LinePlot) -> &mut Self {
+        self.base = line_plot.base;
+        self.curr = line_plot.curr;
+        self.end = line_plot.end;
+        self.slope = line_plot.slope;
+
+        self
+    }
+}
+
 impl Iterator for LinePlot {
     type Item = Point;
 
