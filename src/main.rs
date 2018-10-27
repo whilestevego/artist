@@ -1,10 +1,11 @@
 extern crate image;
 extern crate turtle;
+use std::error::Error;
 
 use image::{ImageBuffer, Rgba, RgbaImage};
 use turtle::*;
 
-fn main() {
+fn main() -> Result<(), Box<Error>> {
     let mut img: RgbaImage = ImageBuffer::new(100, 100);
 
     for (_x, _y, pixel) in img.enumerate_pixels_mut() {
@@ -27,5 +28,8 @@ fn main() {
         .points()
         .for_each(|Point { x, y }| img.put_pixel(x as u32, y as u32, Rgba([0, 0, 0, 255])));
 
-    img.save("test.png").unwrap();
+    img.save("test.png")?;
+
+    println!("compare = {:?}", Point { x: 0.0, y: 2.0 } == (0.0, 2.0));
+    Ok(())
 }
