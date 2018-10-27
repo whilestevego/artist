@@ -9,7 +9,7 @@ pub struct Point {
 
 impl Point {
     pub fn new(x: impl Into<f64>, y: impl Into<f64>) -> Self {
-        Point {
+        Self {
             x: x.into(),
             y: y.into(),
         }
@@ -30,7 +30,7 @@ impl Add for Point {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
-        Point {
+        Self {
             x: self.x + other.x,
             y: self.y + other.y,
         }
@@ -57,7 +57,7 @@ impl Sub for Point {
     type Output = Self;
 
     fn sub(self, other: Self) -> Self {
-        Point {
+        Self {
             x: self.x - other.x,
             y: self.y - other.y,
         }

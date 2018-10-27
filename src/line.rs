@@ -8,7 +8,7 @@ pub struct Line {
 
 impl Line {
     pub fn new(begin: impl Into<Point>, end: impl Into<Point>) -> Line {
-        Line {
+        Self {
             a: begin.into(),
             b: end.into(),
         }
