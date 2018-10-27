@@ -15,6 +15,19 @@ impl Point {
         }
     }
 
+    pub fn magnitude(&self) -> f64 {
+        (self.x.powf(2.0) + self.y.powf(2.0)).sqrt()
+    }
+
+    pub fn direction(&self) -> Self {
+        let magnitude = self.magnitude();
+
+        Self {
+            x: self.x / magnitude,
+            y: self.y / magnitude,
+        }
+    }
+
     pub fn round(self) -> Self {
         self.x.round();
         self.y.round();
