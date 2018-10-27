@@ -64,6 +64,18 @@ impl Ord for Point {
     }
 }
 
+impl PartialEq<(f64, f64)> for Point {
+    fn eq(&self, other: &(f64, f64)) -> bool {
+        self.x.eq(&other.0) && self.y.eq(&other.1)
+    }
+}
+
+impl PartialEq<Point> for (f64, f64) {
+    fn eq(&self, other: &Point) -> bool {
+        other.x.eq(&self.0) && other.y.eq(&self.1)
+    }
+}
+
 impl Eq for Point {}
 
 impl Sub for Point {
