@@ -1,4 +1,5 @@
 use line::*;
+use plotable::*;
 use point::*;
 use std::collections::VecDeque;
 
@@ -18,8 +19,10 @@ impl PolyLine {
         self.points.push_back(point.into());
         self
     }
+}
 
-    pub fn plot(self) -> PolyLinePlot {
+impl Plotable<PolyLinePlot> for PolyLine {
+    fn plot(self) -> PolyLinePlot {
         let PolyLine { mut points } = self;
         let a = points.pop_front().unwrap();
         let b = *points.front().unwrap();
@@ -37,7 +40,6 @@ impl<T: Into<Point>> From<Vec<T>> for PolyLine {
     }
 }
 
-#[derive(Debug)]
 pub struct PolyLinePlot {
     line_plot: LinePlot,
     rem_points: VecDeque<Point>,
@@ -56,7 +58,7 @@ impl Iterator for PolyLinePlot {
             let next_a = rem_points.pop_front().unwrap();
 
             if let Some(&next_b) = rem_points.front() {
-                line_plot.merge(Line::new(next_a, next_b).plot());
+                *line_plot = Line::new(next_a, next_b).plot();
                 line_plot.next();
                 line_plot.next()
             } else {

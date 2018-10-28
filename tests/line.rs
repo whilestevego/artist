@@ -13,9 +13,7 @@ use turtle::*;
 
 #[test]
 fn it_creates_diagonal_line_in_first_quadrant() {
-    let points = Line::new((0.0, 0.0), (3.0, 3.0))
-        .plot()
-        .collect::<Vec<_>>();
+    let points = Line::new((0.0, 0.0), (3.0, 3.0)).plot().collect::<Vec<_>>();
 
     assert_eq!(
         vec![
@@ -81,9 +79,7 @@ fn it_creates_diagonal_line_in_fourth_quadrant() {
 
 #[test]
 fn it_creates_line_on_positive_x() {
-    let points = Line::new((0.0, 0.0), (3.0, 0.0))
-        .plot()
-        .collect::<Vec<_>>();
+    let points = Line::new((0.0, 0.0), (3.0, 0.0)).plot().collect::<Vec<_>>();
 
     assert_eq!(
         vec![
@@ -98,9 +94,7 @@ fn it_creates_line_on_positive_x() {
 
 #[test]
 fn it_creates_line_on_positive_y() {
-    let points = Line::new((0.0, 0.0), (0.0, 3.0))
-        .plot()
-        .collect::<Vec<_>>();
+    let points = Line::new((0.0, 0.0), (0.0, 3.0)).plot().collect::<Vec<_>>();
 
     assert_eq!(
         vec![

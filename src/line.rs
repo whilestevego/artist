@@ -1,3 +1,4 @@
+use plotable::*;
 use point::*;
 
 #[derive(Clone, Default, Debug)]
@@ -14,7 +15,15 @@ impl Line {
         }
     }
 
-    pub fn plot(self) -> LinePlot {
+    pub fn slope(&self) -> f64 {
+        let &Line { a, b } = self;
+
+        (b.y - a.y) / (b.x - a.x)
+    }
+}
+
+impl Plotable<LinePlot> for Line {
+    fn plot(self) -> LinePlot {
         let Line { a, b } = self;
         let slope = self.slope();
 
@@ -25,31 +34,13 @@ impl Line {
             slope,
         }
     }
-
-    pub fn slope(&self) -> f64 {
-        let &Line { a, b } = self;
-
-        (b.y - a.y) / (b.x - a.x)
-    }
 }
 
-#[derive(Debug)]
 pub struct LinePlot {
     base: Point,
     curr: Point,
     end: Point,
     slope: f64,
-}
-
-impl LinePlot {
-    pub fn merge(&mut self, line_plot: LinePlot) -> &mut Self {
-        self.base = line_plot.base;
-        self.curr = line_plot.curr;
-        self.end = line_plot.end;
-        self.slope = line_plot.slope;
-
-        self
-    }
 }
 
 impl Iterator for LinePlot {
