@@ -74,3 +74,24 @@ impl Iterator for LinePlot {
         Some(curr + base)
     }
 }
+
+/* (Page 100)
+
+Bresenham's Line-Drawing Algorithm for |m| < 1
+
+1.  Input the twoline endpoints and store the left endpoint in (xo,yo)
+2.  Load (xo,yo) into the frame buffer; that is plot the first point.
+
+3.  Calculate constants ∆x, ∆y, 2∆y, and 2∆y - 2∆r, and obtain the starting
+    value for the decision parameter as po = 2∆y - ∆X.
+
+4.  At each xk along the line, starting at k = 0, perform the following test:
+    If pk < 0, the next point to plot is (xk + 1, yk) and
+        pk+1 = pk + 2∆y
+
+    Otherwise, the next point to plot is (xk + 1, yk + 1) and
+        pk+1 = pk + 2∆y - 2∆x
+
+5.  Repeat step 4 ∆x times.
+
+*/

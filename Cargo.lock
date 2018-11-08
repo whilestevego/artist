@@ -86,6 +86,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "graphics"
+version = "0.1.0"
+dependencies = [
+ "image 0.20.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "image"
 version = "0.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -274,13 +281,6 @@ dependencies = [
  "lzw 0.10.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "num-derive 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "num-traits 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "turtle"
-version = "0.1.0"
-dependencies = [
- "image 0.20.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

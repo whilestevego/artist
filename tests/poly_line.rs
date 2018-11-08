@@ -1,6 +1,6 @@
-extern crate turtle;
+extern crate graphics;
 
-use turtle::*;
+use graphics::*;
 
 // Cartesian Quadrants
 //         |

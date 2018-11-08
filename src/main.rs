@@ -1,9 +1,9 @@
 extern crate image;
-extern crate turtle;
+extern crate graphics;
 use std::error::Error;
 
 use image::{ImageBuffer, Rgba, RgbaImage};
-use turtle::*;
+use graphics::*;
 
 fn main() -> Result<(), Box<Error>> {
     let image_buffer: &mut RgbaImage = &mut ImageBuffer::new(128, 128);
