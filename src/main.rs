@@ -1,10 +1,11 @@
-extern crate image;
 extern crate graphics;
+extern crate image;
 use std::error::Error;
 
-use image::{ImageBuffer, Rgba, RgbaImage};
 use graphics::*;
+use image::{ImageBuffer, Rgba, RgbaImage};
 
+// TODO: Move me to examples
 fn main() -> Result<(), Box<Error>> {
     let image_buffer: &mut RgbaImage = &mut ImageBuffer::new(128, 128);
 
@@ -37,7 +38,7 @@ fn main() -> Result<(), Box<Error>> {
         (31.5, 31.5),
     ]).render_with(image_buffer, |_| Rgba([0, 0, 255, 255]));
 
-    image_buffer.save("test.png")?;
+    image_buffer.save("sample.png")?;
 
     Ok(())
 }

@@ -1,14 +1,14 @@
 use plotable::*;
-use point::*;
+use vector::*;
 
 #[derive(Clone, Default, Debug)]
 pub struct Line {
-    a: Point,
-    b: Point,
+    a: Vector,
+    b: Vector,
 }
 
 impl Line {
-    pub fn new(begin: impl Into<Point>, end: impl Into<Point>) -> Line {
+    pub fn new(begin: impl Into<Vector>, end: impl Into<Vector>) -> Line {
         Self {
             a: begin.into(),
             b: end.into(),
@@ -18,7 +18,7 @@ impl Line {
     pub fn slope(&self) -> f64 {
         let &Line { a, b } = self;
 
-        (b.y - a.y) / (b.x - a.x)
+        (b.1 - a.1) / (b.0 - a.0)
     }
 }
 
@@ -29,7 +29,7 @@ impl Plotable<LinePlot> for Line {
 
         LinePlot {
             base: a,
-            curr: Point { x: 0.0, y: 0.0 },
+            curr: Vector(0.0, 0.0),
             end: b - a,
             slope,
         }
@@ -37,14 +37,14 @@ impl Plotable<LinePlot> for Line {
 }
 
 pub struct LinePlot {
-    base: Point,
-    curr: Point,
-    end: Point,
+    base: Vector,
+    curr: Vector,
+    end: Vector,
     slope: f64,
 }
 
 impl Iterator for LinePlot {
-    type Item = Point;
+    type Item = Vector;
 
     // Generates all points to draw a line following Bresenham's algorithm using DDA
     // https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
@@ -58,17 +58,17 @@ impl Iterator for LinePlot {
         } = self;
 
         // Exit if curr is past b in any direction
-        if curr.x.abs() > end.x.abs() || curr.y.abs() > end.y.abs() {
+        if curr.0.abs() > end.0.abs() || curr.1.abs() > end.1.abs() {
             return None;
         }
 
         // Calculate and assign next self.ptr
         self.curr = if slope.abs() > 1.0 {
-            let step = end.y.signum();
-            Point::new((1.0 / slope * step) + curr.x, curr.y + step)
+            let step = end.1.signum();
+            Vector((1.0 / slope * step) + curr.0, curr.1 + step)
         } else {
-            let step = end.x.signum();
-            Point::new(curr.x + step, (slope * step) + curr.y)
+            let step = end.0.signum();
+            Vector(curr.0 + step, (slope * step) + curr.1)
         };
 
         Some(curr + base)

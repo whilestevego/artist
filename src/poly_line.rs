@@ -1,52 +1,52 @@
 use line::*;
 use plotable::*;
-use point::*;
 use std::collections::VecDeque;
+use vector::*;
 
 #[derive(Debug)]
 pub struct PolyLine {
-    points: VecDeque<Point>,
+    vectors: VecDeque<Vector>,
 }
 
 impl PolyLine {
-    pub fn new(points: Vec<impl Into<Point>>) -> Self {
+    pub fn new(vectors: Vec<impl Into<Vector>>) -> Self {
         Self {
-            points: points.into_iter().map(|p| p.into()).collect(),
+            vectors: vectors.into_iter().map(|p| p.into()).collect(),
         }
     }
 
-    pub fn to(mut self, point: impl Into<Point>) -> Self {
-        self.points.push_back(point.into());
+    pub fn to(mut self, point: impl Into<Vector>) -> Self {
+        self.vectors.push_back(point.into());
         self
     }
 }
 
 impl Plotable<PolyLinePlot> for PolyLine {
     fn plot(self) -> PolyLinePlot {
-        let PolyLine { mut points } = self;
-        let a = points.pop_front().unwrap();
-        let b = *points.front().unwrap();
+        let PolyLine { mut vectors } = self;
+        let a = vectors.pop_front().unwrap();
+        let b = *vectors.front().unwrap();
 
         PolyLinePlot {
             line_plot: Line::new(a, b).plot(),
-            rem_points: points,
+            rem_points: vectors,
         }
     }
 }
 
-impl<T: Into<Point>> From<Vec<T>> for PolyLine {
-    fn from(points: Vec<T>) -> Self {
-        Self::new(points)
+impl<T: Into<Vector>> From<Vec<T>> for PolyLine {
+    fn from(vectors: Vec<T>) -> Self {
+        Self::new(vectors)
     }
 }
 
 pub struct PolyLinePlot {
     line_plot: LinePlot,
-    rem_points: VecDeque<Point>,
+    rem_points: VecDeque<Vector>,
 }
 
 impl Iterator for PolyLinePlot {
-    type Item = Point;
+    type Item = Vector;
 
     fn next(&mut self) -> Option<Self::Item> {
         let PolyLinePlot {

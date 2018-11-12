@@ -1,8 +1,8 @@
-use point::*;
+use vector::*;
 
 pub trait Plotable<I>
 where
-    I: Iterator<Item = Point>,
+    I: Iterator<Item = Vector>,
 {
     fn plot(self) -> I;
 }

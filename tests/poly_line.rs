@@ -14,10 +14,10 @@ use graphics::*;
 #[test]
 fn it_draws_two_lines_at_90_deg() {
     let poly_line = PolyLine::new(vec![(0.0, 0.0), (3.0, 3.0), (0.0, 3.0)]);
-    let points = poly_line.plot().collect::<Vec<_>>();
+    let vectors = poly_line.plot().collect::<Vec<_>>();
 
     assert_eq!(
-        points,
+        vectors,
         vec![
             (0.0, 0.0),
             (1.0, 1.0),
@@ -43,19 +43,19 @@ fn it_draws_a_square_in_first_quadrant() {
     assert_eq!(
         poly_line.plot().collect::<Vec<_>>(),
         vec![
-            Point::new(0.0, 0.0),
-            Point::new(1.0, 0.0),
-            Point::new(2.0, 0.0),
-            Point::new(3.0, 0.0),
-            Point::new(3.0, 1.0),
-            Point::new(3.0, 2.0),
-            Point::new(3.0, 3.0),
-            Point::new(2.0, 3.0),
-            Point::new(1.0, 3.0),
-            Point::new(0.0, 3.0),
-            Point::new(0.0, 2.0),
-            Point::new(0.0, 1.0),
-            Point::new(0.0, 0.0)
+            Vector(0.0, 0.0),
+            Vector(1.0, 0.0),
+            Vector(2.0, 0.0),
+            Vector(3.0, 0.0),
+            Vector(3.0, 1.0),
+            Vector(3.0, 2.0),
+            Vector(3.0, 3.0),
+            Vector(2.0, 3.0),
+            Vector(1.0, 3.0),
+            Vector(0.0, 3.0),
+            Vector(0.0, 2.0),
+            Vector(0.0, 1.0),
+            Vector(0.0, 0.0)
         ]
     )
 }
@@ -73,15 +73,15 @@ fn it_draws_a_diamond_accross_all_quadrants() {
     assert_eq!(
         poly_line.plot().collect::<Vec<_>>(),
         vec![
-            Point::new(-2.0, 0.0),
-            Point::new(-1.0, 1.0),
-            Point::new(0.0, 2.0),
-            Point::new(1.0, 1.0),
-            Point::new(2.0, 0.0),
-            Point::new(1.0, -1.0),
-            Point::new(0.0, -2.0),
-            Point::new(-1.0, -1.0),
-            Point::new(-2.0, 0.0),
+            Vector(-2.0, 0.0),
+            Vector(-1.0, 1.0),
+            Vector(0.0, 2.0),
+            Vector(1.0, 1.0),
+            Vector(2.0, 0.0),
+            Vector(1.0, -1.0),
+            Vector(0.0, -2.0),
+            Vector(-1.0, -1.0),
+            Vector(-2.0, 0.0),
         ]
     )
 }
