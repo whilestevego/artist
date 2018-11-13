@@ -46,9 +46,7 @@ pub struct LinePlot {
 impl Iterator for LinePlot {
     type Item = Vector;
 
-    // Generates all points to draw a line following Bresenham's algorithm using DDA
-    // https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
-    // https://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm)
+    // TODO: Review algorithm and compare to Bresenham's
     fn next(&mut self) -> Option<Self::Item> {
         let &mut LinePlot {
             base,
@@ -75,7 +73,12 @@ impl Iterator for LinePlot {
     }
 }
 
-/* (Page 100)
+/* 
+
+Computer Graphics, C Version, 2/e (Page 100)
+
+https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
+https://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm)
 
 Bresenham's Line-Drawing Algorithm for |m| < 1
 
