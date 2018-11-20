@@ -11,130 +11,100 @@ use graphics::*;
 //    3    |    4
 //         |
 
+fn build_line_points(a: impl Into<Vector>, b: impl Into<Vector>) -> Vec<Point<i64>> {
+    Line::new(a.into(), b.into())
+        .plot()
+        .take(25)
+        .collect::<Vec<_>>()
+}
+
 #[test]
 fn it_creates_diagonal_line_in_first_quadrant() {
-    let vectors = Line::new((0.0, 0.0), (3.0, 3.0)).plot().collect::<Vec<_>>();
-
-    assert_eq!(vec![(0, 0), (1, 1), (2, 2), (3, 3)], vectors)
+    let points = build_line_points((0.0, 0.0), (3.0, 3.0));
+    assert_eq!(vec![(0, 0), (1, 1), (2, 2), (3, 3)], points)
 }
 
 #[test]
 fn it_creates_diagonal_line_less_than_45_deg() {
-    let vectors = Line::new((0.0, 0.0), (4.0, 2.0)).plot().collect::<Vec<_>>();
-
-    assert_eq!(vec![(0, 0), (1, 1), (2, 1), (3, 2), (4, 2)], vectors)
+    let points = build_line_points((0.0, 0.0), (4.0, 2.0));
+    assert_eq!(vec![(0, 0), (1, 1), (2, 1), (3, 2), (4, 2)], points)
 }
 
 #[test]
 fn it_creates_diagonal_line_between_45_and_90_deg() {
-    let vectors = Line::new((0.0, 0.0), (2.0, 4.0)).plot().collect::<Vec<_>>();
-
-    assert_eq!(vec![(0, 0), (1, 1), (1, 2), (2, 3), (2, 4)], vectors)
+    let points = build_line_points((0.0, 0.0), (2.0, 4.0));
+    assert_eq!(vec![(0, 0), (1, 1), (1, 2), (2, 3), (2, 4)], points)
 }
 
 #[test]
 
 fn it_creates_diagonal_line_in_second_quadrant() {
-    let vectors = Line::new((0.0, 0.0), (-3.0, 3.0))
-        .plot()
-        .collect::<Vec<_>>();
-
-    assert_eq!(vec![(0, 0), (-1, 1), (-2, 2), (-3, 3)], vectors)
+    let points = build_line_points((0.0, 0.0), (-3.0, 3.0));
+    assert_eq!(vec![(0, 0), (-1, 1), (-2, 2), (-3, 3)], points)
 }
 
 #[test]
 
 fn it_creates_diagonal_line_in_third_quadrant() {
-    let vectors = Line::new((0.0, 0.0), (-3.0, -3.0))
-        .plot()
-        .collect::<Vec<_>>();
-
-    assert_eq!(vec![(0, 0), (-1, -1), (-2, -2), (-3, -3)], vectors)
+    let points = build_line_points((0.0, 0.0), (-3.0, -3.0));
+    assert_eq!(vec![(0, 0), (-1, -1), (-2, -2), (-3, -3)], points)
 }
 
 #[test]
 
 fn it_creates_diagonal_line_in_fourth_quadrant() {
-    let vectors = Line::new((0.0, 0.0), (3.0, -3.0))
-        .plot()
-        .collect::<Vec<_>>();
-
-    assert_eq!(vec![(0, 0), (1, -1), (2, -2), (3, -3)], vectors)
+    let points = build_line_points((0.0, 0.0), (3.0, -3.0));
+    assert_eq!(vec![(0, 0), (1, -1), (2, -2), (3, -3)], points)
 }
 
 #[test]
 fn it_creates_line_on_positive_x() {
-    let vectors = Line::new((0.0, 0.0), (3.0, 0.0))
-        .plot()
-        .take(4)
-        .collect::<Vec<_>>();
-
-    assert_eq!(vec![(0, 0), (1, 0), (2, 0), (3, 0)], vectors)
+    let points = build_line_points((0.0, 0.0), (3.0, 0.0));
+    assert_eq!(vec![(0, 0), (1, 0), (2, 0), (3, 0)], points)
 }
 
 #[test]
 fn it_creates_line_on_positive_y() {
-    let vectors = Line::new((0.0, 0.0), (0.0, 3.0))
-        .plot()
-        .take(4)
-        .collect::<Vec<_>>();
-
-    assert_eq!(vec![(0, 0), (0, 1), (0, 2), (0, 3)], vectors)
+    let points = build_line_points((0.0, 0.0), (0.0, 3.0));
+    assert_eq!(vec![(0, 0), (0, 1), (0, 2), (0, 3)], points)
 }
 
 #[test]
 fn it_creates_line_on_negative_x() {
-    let vectors = Line::new((0.0, 0.0), (-3.0, 0.0))
-        .plot()
-        .take(4)
-        .collect::<Vec<_>>();
-
-    assert_eq!(vec![(0, 0), (-1, 0), (-2, 0), (-3, 0)], vectors)
+    let points = build_line_points((0.0, 0.0), (-3.0, 0.0));
+    assert_eq!(vec![(0, 0), (-1, 0), (-2, 0), (-3, 0)], points)
 }
 
 #[test]
 fn it_creates_line_on_negative_y() {
-    let vectors = Line::new((0.0, 0.0), (0.0, -3.0))
-        .plot()
-        .take(4)
-        .collect::<Vec<_>>();
-
-    assert_eq!(vec![(0, 0), (0, -1), (0, -2), (0, -3)], vectors)
+    let points = build_line_points((0.0, 0.0), (0.0, -3.0));
+    assert_eq!(vec![(0, 0), (0, -1), (0, -2), (0, -3)], points)
 }
 
 #[test]
 
 fn it_creates_diagonal_line_from_third_to_first_quadrant() {
-    let vectors = Line::new((-3.0, -3.0), (3.0, 3.0))
-        .plot()
-        .collect::<Vec<_>>();
-
+    let points = build_line_points((-3.0, -3.0), (3.0, 3.0));
     assert_eq!(
         vec![(-3, -3), (-2, -2), (-1, -1), (0, 0), (1, 1), (2, 2), (3, 3)],
-        vectors
+        points
     )
 }
 
 #[test]
 
 fn it_creates_diagonal_line_from_first_to_third_quadrant() {
-    let vectors = Line::new((3.0, 3.0), (-3.0, -3.0))
-        .plot()
-        .collect::<Vec<_>>();
-
+    let points = build_line_points((3.0, 3.0), (-3.0, -3.0));
     assert_eq!(
         vec![(3, 3), (2, 2), (1, 1), (0, 0), (-1, -1), (-2, -2), (-3, -3)],
-        vectors
+        points
     )
 }
 
 #[test]
 
 fn it_creates_lines_in_arbitrary_angles() {
-    let vectors = Line::new((1.0, 2.0), (3.0, 10.0))
-        .plot()
-        .collect::<Vec<_>>();
-
+    let points = build_line_points((1.0, 2.0), (3.0, 10.0));
     assert_eq!(
         vec![
             (1, 2),
@@ -147,32 +117,23 @@ fn it_creates_lines_in_arbitrary_angles() {
             (3, 9),
             (3, 10)
         ],
-        vectors
+        points
     )
 }
 
 #[test]
 
 fn it_creates_same_points_for_mirrored_lines() {
-    let vectors = Line::new((-3.0, -3.0), (3.0, 3.0))
-        .plot()
-        .collect::<Vec<_>>();
-
-    let mut points_mirrored = Line::new((3.0, 3.0), (-3.0, -3.0))
-        .plot()
-        .collect::<Vec<_>>();
+    let points = build_line_points((-3.0, -3.0), (3.0, 3.0));
+    let mut points_mirrored = build_line_points((3.0, 3.0), (-3.0, -3.0));
 
     points_mirrored.sort();
 
-    assert_eq!(vectors, points_mirrored)
+    assert_eq!(points, points_mirrored)
 }
 
 #[test]
 fn it_draws_perpendicular_to_x_axis() {
-    let vectors = Line::new((3.0, 0.0), (3.0, 3.0))
-        .plot()
-        .take(20)
-        .collect::<Vec<_>>();
-
-    assert_eq!(vec![(3, 0), (3, 1), (3, 2), (3, 3),], vectors)
+    let points = build_line_points((3.0, 0.0), (3.0, 3.0));
+    assert_eq!(vec![(3, 0), (3, 1), (3, 2), (3, 3),], points)
 }

@@ -14,7 +14,7 @@ use graphics::*;
 #[test]
 fn it_draws_two_lines_at_90_deg() {
     let poly_line = PolyLine::new(vec![(0.0, 0.0), (3.0, 3.0), (0.0, 3.0)]);
-    let vectors = poly_line.plot().collect::<Vec<_>>();
+    let vectors = poly_line.plot().take(25).collect::<Vec<_>>();
 
     assert_eq!(
         vectors,
@@ -48,7 +48,7 @@ fn it_draws_a_square_in_first_quadrant() {
             (0, 1),
             (0, 0)
         ],
-        poly_line.plot().take(20).collect::<Vec<_>>()
+        poly_line.plot().take(25).collect::<Vec<_>>()
     )
 }
 
@@ -74,6 +74,6 @@ fn it_draws_a_diamond_accross_all_quadrants() {
             (-1, -1),
             (-2, 0),
         ],
-        poly_line.plot().take(20).collect::<Vec<_>>(),
+        poly_line.plot().take(25).collect::<Vec<_>>(),
     )
 }
