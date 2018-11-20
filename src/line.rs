@@ -1,5 +1,4 @@
-use plotable::*;
-use vector::*;
+use crate::*;
 
 #[derive(Clone, Default, Debug)]
 pub struct Line {
@@ -22,54 +21,88 @@ impl Line {
     }
 }
 
-impl Plotable<LinePlot> for Line {
+impl Plotable<LinePlot, i64> for Line {
     fn plot(self) -> LinePlot {
         let Line { a, b } = self;
-        let slope = self.slope();
+
+        let (begin, end): (Point<i64>, Point<i64>) = (a.into(), (b - a).into());
+
+        let dx = end.0.abs();
+        let dy = end.1.abs();
+
+        let (lead_axis, trail_axis) = if dy > dx {
+            (Axis::Y, Axis::X)
+        } else {
+            (Axis::X, Axis::Y)
+        };
+
+        let lead_step = (end.get(&lead_axis) - begin.get(&lead_axis)).signum();
+        let trail_step = (end.get(&trail_axis) - begin.get(&trail_axis)).signum();
+
+        let (p, two_d, two_dd) = match lead_axis {
+            Axis::X => (2 * dy - dx, 2 * dy, 2 * (dy - dx)),
+            Axis::Y => (2 * dx - dy, 2 * dx, 2 * (dx - dy)),
+        };
 
         LinePlot {
-            base: a,
-            curr: Vector(0.0, 0.0),
-            end: b - a,
-            slope,
+            begin,
+            end,
+            curr: Point(0, 0),
+            lead_axis,
+            trail_axis,
+            lead_step,
+            trail_step,
+            p,
+            two_d,
+            two_dd,
         }
     }
 }
 
 pub struct LinePlot {
-    base: Vector,
-    curr: Vector,
-    end: Vector,
-    slope: f64,
+    begin: Point<i64>,
+    end: Point<i64>,
+    curr: Point<i64>,
+    lead_axis: Axis,
+    trail_axis: Axis,
+    lead_step: i64,
+    trail_step: i64,
+    p: i64,
+    two_d: i64,
+    two_dd: i64,
 }
 
 impl Iterator for LinePlot {
-    type Item = Vector;
+    type Item = Point<i64>;
 
-    // TODO: Review algorithm and compare to Bresenham's
     fn next(&mut self) -> Option<Self::Item> {
-        let &mut LinePlot {
-            base,
-            curr,
-            end,
-            slope,
-        } = self;
-
-        // Exit if curr is past b in any direction
-        if curr.0.abs() > end.0.abs() || curr.1.abs() > end.1.abs() {
-            return None;
-        }
-
-        // Calculate and assign next self.ptr
-        self.curr = if slope.abs() > 1.0 {
-            let step = end.1.signum();
-            Vector((1.0 / slope * step) + curr.0, curr.1 + step)
+        if self.lead_step.is_negative() {
+            if self.curr.get(&self.lead_axis) < self.end.get(&self.lead_axis) {
+                return None;
+            }
         } else {
-            let step = end.0.signum();
-            Vector(curr.0 + step, (slope * step) + curr.1)
+            if self.curr.get(&self.lead_axis) > self.end.get(&self.lead_axis) {
+                return None;
+            }
         };
 
-        Some(curr + base)
+        let next = Some(Point(
+            self.curr.0 + self.begin.0,
+            self.curr.1 + self.begin.1,
+        ));
+
+        *self.curr.get_mut(&self.lead_axis) += self.lead_step;
+
+        if self.two_d != 0 {
+            if self.p < 0 {
+                self.p += self.two_d;
+            } else {
+                *self.curr.get_mut(&self.trail_axis) += self.trail_step;
+                self.p += self.two_dd;
+            }
+        }
+
+        next
     }
 }
 
@@ -79,6 +112,9 @@ Computer Graphics, C Version, 2/e (Page 100)
 
 https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 https://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm)
+
+
+∆y = m * ∆x
 
 Bresenham's Line-Drawing Algorithm for |m| < 1
 

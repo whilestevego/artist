@@ -18,15 +18,7 @@ fn it_draws_two_lines_at_90_deg() {
 
     assert_eq!(
         vectors,
-        vec![
-            (0.0, 0.0),
-            (1.0, 1.0),
-            (2.0, 2.0),
-            (3.0, 3.0),
-            (2.0, 3.0),
-            (1.0, 3.0),
-            (0.0, 3.0)
-        ]
+        vec![(0, 0), (1, 1), (2, 2), (3, 3), (2, 3), (1, 3), (0, 3)]
     )
 }
 
@@ -41,22 +33,22 @@ fn it_draws_a_square_in_first_quadrant() {
     ]);
 
     assert_eq!(
-        poly_line.plot().collect::<Vec<_>>(),
         vec![
-            Vector(0.0, 0.0),
-            Vector(1.0, 0.0),
-            Vector(2.0, 0.0),
-            Vector(3.0, 0.0),
-            Vector(3.0, 1.0),
-            Vector(3.0, 2.0),
-            Vector(3.0, 3.0),
-            Vector(2.0, 3.0),
-            Vector(1.0, 3.0),
-            Vector(0.0, 3.0),
-            Vector(0.0, 2.0),
-            Vector(0.0, 1.0),
-            Vector(0.0, 0.0)
-        ]
+            (0, 0),
+            (1, 0),
+            (2, 0),
+            (3, 0),
+            (3, 1),
+            (3, 2),
+            (3, 3),
+            (2, 3),
+            (1, 3),
+            (0, 3),
+            (0, 2),
+            (0, 1),
+            (0, 0)
+        ],
+        poly_line.plot().take(20).collect::<Vec<_>>()
     )
 }
 
@@ -71,17 +63,17 @@ fn it_draws_a_diamond_accross_all_quadrants() {
     ]);
 
     assert_eq!(
-        poly_line.plot().collect::<Vec<_>>(),
         vec![
-            Vector(-2.0, 0.0),
-            Vector(-1.0, 1.0),
-            Vector(0.0, 2.0),
-            Vector(1.0, 1.0),
-            Vector(2.0, 0.0),
-            Vector(1.0, -1.0),
-            Vector(0.0, -2.0),
-            Vector(-1.0, -1.0),
-            Vector(-2.0, 0.0),
-        ]
+            (-2, 0),
+            (-1, 1),
+            (0, 2),
+            (1, 1),
+            (2, 0),
+            (1, -1),
+            (0, -2),
+            (-1, -1),
+            (-2, 0),
+        ],
+        poly_line.plot().take(20).collect::<Vec<_>>(),
     )
 }

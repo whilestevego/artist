@@ -1,7 +1,5 @@
-use line::*;
-use plotable::*;
+use crate::*;
 use std::collections::VecDeque;
-use vector::*;
 
 #[derive(Debug)]
 pub struct PolyLine {
@@ -21,7 +19,7 @@ impl PolyLine {
     }
 }
 
-impl Plotable<PolyLinePlot> for PolyLine {
+impl Plotable<PolyLinePlot, i64> for PolyLine {
     fn plot(self) -> PolyLinePlot {
         let PolyLine { mut vectors } = self;
         let a = vectors.pop_front().unwrap();
@@ -46,7 +44,7 @@ pub struct PolyLinePlot {
 }
 
 impl Iterator for PolyLinePlot {
-    type Item = Vector;
+    type Item = Point<i64>;
 
     fn next(&mut self) -> Option<Self::Item> {
         let PolyLinePlot {

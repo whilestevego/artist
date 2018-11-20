@@ -1,4 +1,5 @@
 extern crate image;
+extern crate num;
 
 mod axis;
 mod line;
