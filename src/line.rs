@@ -14,7 +14,7 @@ impl Line {
         }
     }
 
-    pub fn slope(&self) -> f64 {
+    pub fn slope(&self) -> f32 {
         let &Line { a, b } = self;
 
         (b.1 - a.1) / (b.0 - a.0)

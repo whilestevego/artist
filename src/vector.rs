@@ -1,9 +1,8 @@
 use std::cmp::Ordering;
 use std::ops::{Add, Sub};
 
-//TODO: Use num create to make Vectors generic over numbers
 #[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
-pub struct Vector(pub f64, pub f64);
+pub struct Vector(pub f32, pub f32);
 
 impl Vector {
     /// The scalar porpotion of the vector or its length.
@@ -15,7 +14,7 @@ impl Vector {
     /// assert_eq!(Vector(1.0, 1.0).magnitude(), 1.4142135623730951);
     /// assert_eq!(Vector(3.0, 4.0).magnitude(), 5.0);
     /// ```
-    pub fn magnitude(&self) -> f64 {
+    pub fn magnitude(&self) -> f32 {
         (self.0.powf(2.0) + self.1.powf(2.0)).sqrt()
     }
 
@@ -92,13 +91,13 @@ impl Ord for Vector {
 
 // EQUALITY
 
-impl PartialEq<(f64, f64)> for Vector {
-    fn eq(&self, other: &(f64, f64)) -> bool {
+impl PartialEq<(f32, f32)> for Vector {
+    fn eq(&self, other: &(f32, f32)) -> bool {
         self.0.eq(&other.0) && self.1.eq(&other.1)
     }
 }
 
-impl PartialEq<Vector> for (f64, f64) {
+impl PartialEq<Vector> for (f32, f32) {
     fn eq(&self, other: &Vector) -> bool {
         other.0.eq(&self.0) && other.1.eq(&self.1)
     }
@@ -106,14 +105,8 @@ impl PartialEq<Vector> for (f64, f64) {
 
 impl Eq for Vector {}
 
-impl From<(f64, f64)> for Vector {
-    fn from((x, y): (f64, f64)) -> Self {
-        Vector(x, y)
-    }
-}
-
 impl From<(f32, f32)> for Vector {
     fn from((x, y): (f32, f32)) -> Self {
-        Vector(x as f64, y as f64)
+        Vector(x, y)
     }
 }
