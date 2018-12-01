@@ -19,16 +19,16 @@ impl PolyLine {
     }
 }
 
-impl Plotable<PolyLinePlot, i64> for PolyLine {
-    fn plot(self) -> PolyLinePlot {
+impl Plotable for PolyLine {
+    fn plot(self) -> Plot {
         let PolyLine { mut vectors } = self;
         let a = vectors.pop_front().unwrap();
         let b = *vectors.front().unwrap();
 
-        PolyLinePlot {
+        Box::new(PolyLinePlot {
             line_plot: Line::new(a, b).plot(),
             rem_points: vectors,
-        }
+        })
     }
 }
 
@@ -39,7 +39,7 @@ impl<T: Into<Vector>> From<Vec<T>> for PolyLine {
 }
 
 pub struct PolyLinePlot {
-    line_plot: LinePlot,
+    line_plot: Plot,
     rem_points: VecDeque<Vector>,
 }
 

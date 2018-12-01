@@ -2,10 +2,9 @@ use crate::*;
 use image::{Rgba, RgbaImage};
 
 // TODO: Support any pixel type
-pub trait Renderable<I>
+pub trait Renderable
 where
-    Self: Sized + Plotable<I, i64>,
-    I: Iterator<Item = Point<i64>>,
+    Self: Sized + Plotable,
 {
     fn render(self, image_buffer: &mut RgbaImage) {
         self.plot().for_each(|Point(x, y)| {
@@ -22,5 +21,5 @@ where
     }
 }
 
-impl Renderable<LinePlot> for Line {}
-impl Renderable<PolyLinePlot> for PolyLine {}
+impl Renderable for Line {}
+impl Renderable for PolyLine {}

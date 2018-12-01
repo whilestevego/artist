@@ -21,8 +21,8 @@ impl Line {
     }
 }
 
-impl Plotable<LinePlot, i64> for Line {
-    fn plot(self) -> LinePlot {
+impl Plotable for Line {
+    fn plot(self) -> Plot {
         let Line { a, b } = self;
 
         let (begin, end): (Point<i64>, Point<i64>) = (a.into(), (b - a).into());
@@ -44,7 +44,7 @@ impl Plotable<LinePlot, i64> for Line {
             Axis::Y => (2 * dx - dy, 2 * dx, 2 * (dx - dy)),
         };
 
-        LinePlot {
+        Box::new(LinePlot {
             begin,
             end,
             curr: Point(0, 0),
@@ -55,6 +55,7 @@ impl Plotable<LinePlot, i64> for Line {
             p,
             two_d,
             two_dd,
+        })
         }
     }
 }

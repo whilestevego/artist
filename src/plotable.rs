@@ -1,10 +1,7 @@
 use crate::*;
-use num::Integer;
 
-pub trait Plotable<I, T>
-where
-    I: Iterator<Item = Point<T>>,
-    T: Integer,
-{
-    fn plot(self) -> I;
+pub type Plot = Box<dyn Iterator<Item = Point<i32>>>;
+
+pub trait Plotable {
+    fn plot(self) -> Plot;
 }
