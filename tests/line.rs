@@ -11,7 +11,7 @@ use graphics::*;
 //    3    |    4
 //         |
 
-fn build_line_points(a: impl Into<Vector>, b: impl Into<Vector>) -> Vec<Point<i64>> {
+fn build_line_points(a: impl Into<Vector>, b: impl Into<Vector>) -> Vec<Point<i32>> {
     Line::new(a.into(), b.into())
         .plot()
         .take(25)

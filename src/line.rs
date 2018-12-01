@@ -25,7 +25,7 @@ impl Plotable for Line {
     fn plot(self) -> Plot {
         let Line { a, b } = self;
 
-        let (begin, end): (Point<i64>, Point<i64>) = (a.into(), (b - a).into());
+        let (begin, end): (Point<i32>, Point<i32>) = (a.into(), (b - a).into());
 
         let dx = end.0.abs();
         let dy = end.1.abs();
@@ -56,35 +56,32 @@ impl Plotable for Line {
             two_d,
             two_dd,
         })
-        }
     }
 }
 
 pub struct LinePlot {
-    begin: Point<i64>,
-    end: Point<i64>,
-    curr: Point<i64>,
+    begin: Point<i32>,
+    end: Point<i32>,
+    curr: Point<i32>,
     lead_axis: Axis,
     trail_axis: Axis,
-    lead_step: i64,
-    trail_step: i64,
-    p: i64,
-    two_d: i64,
-    two_dd: i64,
+    lead_step: i32,
+    trail_step: i32,
+    p: i32,
+    two_d: i32,
+    two_dd: i32,
 }
 
 impl Iterator for LinePlot {
-    type Item = Point<i64>;
+    type Item = Point<i32>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.lead_step.is_negative() {
             if self.curr.get(&self.lead_axis) < self.end.get(&self.lead_axis) {
                 return None;
             }
-        } else {
-            if self.curr.get(&self.lead_axis) > self.end.get(&self.lead_axis) {
-                return None;
-            }
+        } else if self.curr.get(&self.lead_axis) > self.end.get(&self.lead_axis) {
+            return None;
         };
 
         let next = Some(Point(

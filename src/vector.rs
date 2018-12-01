@@ -14,7 +14,7 @@ impl Vector {
     /// assert_eq!(Vector(1.0, 1.0).magnitude(), 1.4142135623730951);
     /// assert_eq!(Vector(3.0, 4.0).magnitude(), 5.0);
     /// ```
-    pub fn magnitude(&self) -> f32 {
+    pub fn magnitude(self) -> f32 {
         (self.0.powf(2.0) + self.1.powf(2.0)).sqrt()
     }
 
@@ -27,7 +27,7 @@ impl Vector {
     /// assert_eq!(Vector(1.0, 1.0).direction(), Vector(0.7071067811865475, 0.7071067811865475));
     /// assert_eq!(Vector(3.0, 4.0).direction(), Vector(0.6, 0.8));
     /// ```
-    pub fn direction(&self) -> Self {
+    pub fn direction(self) -> Self {
         let magnitude = self.magnitude();
 
         Vector(self.0 / magnitude, self.1 / magnitude)

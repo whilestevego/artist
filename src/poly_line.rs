@@ -44,7 +44,7 @@ pub struct PolyLinePlot {
 }
 
 impl Iterator for PolyLinePlot {
-    type Item = Point<i64>;
+    type Item = Point<i32>;
 
     fn next(&mut self) -> Option<Self::Item> {
         let PolyLinePlot {
