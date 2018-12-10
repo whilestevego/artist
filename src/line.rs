@@ -1,34 +1,35 @@
 use crate::*;
 
-#[derive(Clone, Default, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct Line {
-    a: Vector,
-    b: Vector,
+    start: Vector,
+    end: Vector,
 }
 
 impl Line {
-    pub fn new(begin: impl Into<Vector>, end: impl Into<Vector>) -> Line {
+    pub fn new(start: impl Into<Vector>, end: impl Into<Vector>) -> Self {
         Self {
-            a: begin.into(),
-            b: end.into(),
+            start: start.into(),
+            end: end.into(),
         }
     }
 
     pub fn slope(&self) -> f32 {
-        let &Line { a, b } = self;
+        let &Line { start, end } = self;
 
-        (b.1 - a.1) / (b.0 - a.0)
+        (end.1 - start.1) / (end.0 - start.0)
     }
 }
 
+/// Implementation of Bresenham's Line Drawing Algorithm
 impl Plotable for Line {
     fn plot(self) -> Plot {
-        let Line { a, b } = self;
+        let Line { start, end } = self;
 
-        let (begin, end): (Point<i32>, Point<i32>) = (a.into(), (b - a).into());
+        let (first, last): (Point<i32>, Point<i32>) = (start.into(), (end - start).into());
 
-        let dx = end.0.abs();
-        let dy = end.1.abs();
+        let dx = last.0.abs();
+        let dy = last.1.abs();
 
         let (lead_axis, trail_axis) = if dy > dx {
             (Axis::Y, Axis::X)
@@ -36,8 +37,8 @@ impl Plotable for Line {
             (Axis::X, Axis::Y)
         };
 
-        let lead_step = (end.get(&lead_axis) - begin.get(&lead_axis)).signum();
-        let trail_step = (end.get(&trail_axis) - begin.get(&trail_axis)).signum();
+        let lead_step = (last.get(&lead_axis) - first.get(&lead_axis)).signum();
+        let trail_step = (last.get(&trail_axis) - first.get(&trail_axis)).signum();
 
         let (p, two_d, two_dd) = match lead_axis {
             Axis::X => (2 * dy - dx, 2 * dy, 2 * (dy - dx)),
@@ -45,8 +46,8 @@ impl Plotable for Line {
         };
 
         Box::new(LinePlot {
-            begin,
-            end,
+            first,
+            last,
             curr: Point(0, 0),
             lead_axis,
             trail_axis,
@@ -60,8 +61,8 @@ impl Plotable for Line {
 }
 
 pub struct LinePlot {
-    begin: Point<i32>,
-    end: Point<i32>,
+    first: Point<i32>,
+    last: Point<i32>,
     curr: Point<i32>,
     lead_axis: Axis,
     trail_axis: Axis,
@@ -77,22 +78,22 @@ impl Iterator for LinePlot {
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.lead_step.is_negative() {
-            if self.curr.get(&self.lead_axis) < self.end.get(&self.lead_axis) {
+            if self.curr.get(&self.lead_axis) < self.last.get(&self.lead_axis) {
                 return None;
             }
-        } else if self.curr.get(&self.lead_axis) > self.end.get(&self.lead_axis) {
+        } else if self.curr.get(&self.lead_axis) > self.last.get(&self.lead_axis) {
             return None;
         };
 
         let next = Some(Point(
-            self.curr.0 + self.begin.0,
-            self.curr.1 + self.begin.1,
+            self.curr.0 + self.first.0,
+            self.curr.1 + self.first.1,
         ));
 
         *self.curr.get_mut(&self.lead_axis) += self.lead_step;
 
         if self.two_d != 0 {
-            if self.p < 0 {
+            if self.p.is_negative() {
                 self.p += self.two_d;
             } else {
                 *self.curr.get_mut(&self.trail_axis) += self.trail_step;
