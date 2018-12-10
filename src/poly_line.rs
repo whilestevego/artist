@@ -1,7 +1,7 @@
 use crate::*;
 use std::collections::VecDeque;
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct PolyLine {
     vectors: VecDeque<Vector>,
 }
@@ -19,6 +19,7 @@ impl PolyLine {
     }
 }
 
+/// Implemented by Plotting Successive Lines
 impl Plotable for PolyLine {
     fn plot(self) -> Plot {
         let PolyLine { mut vectors } = self;
