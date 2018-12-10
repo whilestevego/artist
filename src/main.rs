@@ -37,6 +37,9 @@ fn main() -> Result<(), Box<Error>> {
         (31.5, 31.5),
     ]).render_with(image_buffer, |_| Rgba([0, 0, 255, 255]));
 
+    Circle::new((127.0 / 2.0, 127.0 / 2.0), 127.0 / 4.0)
+        .render_with(image_buffer, |_| Rgba([255, 0, 255, 255]));
+
     image_buffer.save("sample.png")?;
 
     Ok(())

@@ -2,6 +2,7 @@ extern crate image;
 extern crate num;
 
 mod axis;
+mod circle;
 mod line;
 mod plotable;
 mod point;
@@ -10,6 +11,7 @@ mod renderable;
 mod vector;
 
 pub use self::axis::*;
+pub use self::circle::*;
 pub use self::line::*;
 pub use self::plotable::*;
 pub use self::point::*;
