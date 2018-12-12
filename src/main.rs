@@ -1,5 +1,3 @@
-extern crate graphics;
-extern crate image;
 use std::error::Error;
 
 use graphics::*;
@@ -19,7 +17,8 @@ fn main() -> Result<(), Box<Error>> {
         (127.0, 127.0),
         (0.0, 127.0),
         (0.0, 0.0),
-    ]).render_with(image_buffer, |_| Rgba([255, 0, 0, 255]));
+    ])
+    .render_with(image_buffer, |_| Rgba([255, 0, 0, 255]));
 
     PolyLine::new(vec![
         (0.0, 63.0),
@@ -27,7 +26,8 @@ fn main() -> Result<(), Box<Error>> {
         (127.0, 63.0),
         (63.0, 127.0),
         (0.0, 63.0),
-    ]).render_with(image_buffer, |_| Rgba([0, 255, 255, 255]));
+    ])
+    .render_with(image_buffer, |_| Rgba([0, 255, 255, 255]));
 
     PolyLine::new(vec![
         (31.5, 31.5),
@@ -35,7 +35,8 @@ fn main() -> Result<(), Box<Error>> {
         (31.5 + 63.0, 31.5 + 63.0),
         (31.5, 31.5 + 63.0),
         (31.5, 31.5),
-    ]).render_with(image_buffer, |_| Rgba([0, 0, 255, 255]));
+    ])
+    .render_with(image_buffer, |_| Rgba([0, 0, 255, 255]));
 
     Circle::new((127.0 / 2.0, 127.0 / 2.0), 127.0 / 4.0)
         .render_with(image_buffer, |_| Rgba([255, 0, 255, 255]));

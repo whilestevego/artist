@@ -1,5 +1,3 @@
-extern crate graphics;
-
 use graphics::*;
 
 // Cartesian Quadrants
