@@ -17,7 +17,7 @@ impl Circle {
 
 impl Plotable for Circle {
     fn plot(self) -> Plot {
-        let curr = Point(0, self.radius as i32);
+        let curr = Point(self.radius as i32, 0);
         let p = 1 - self.radius as i32;
 
         Box::new(CirclePlot {
@@ -31,10 +31,10 @@ impl Plotable for Circle {
 
 // Circle Quadrants
 //
-//           +Y
+//           +Y (y,x)
 //      \  7  |  0  /
 //       \    |    /
-//        \   |   /
+//        \   |   /   (x, y)
 //     6   \  |  /   1
 //          \ | /
 // -X ----------------- +X
@@ -64,7 +64,7 @@ impl Iterator for CirclePlot {
                 next_point.1 + self.origin.1,
             ))
         } else {
-            if self.curr.0 > self.curr.1 {
+            if self.curr.1 > self.curr.0 {
                 return None;
             };
 
@@ -91,13 +91,14 @@ impl Iterator for CirclePlot {
             self.point_buffer.push(Point(self.curr.1, self.curr.0));
 
             // Calculate next point
+            // TODO: pre-calculate multiplications
             if self.p < 0 {
-                self.p += 2 * self.curr.0 + 3;
-                self.curr.0 += 1;
+                self.p += 2 * self.curr.1 + 3;
+                self.curr.1 += 1;
             } else {
-                self.p += 2 * self.curr.0 - 2 * self.curr.1 + 5;
-                self.curr.0 += 1;
-                self.curr.1 -= 1;
+                self.p += 2 * self.curr.1 - 2 * self.curr.0 + 5;
+                self.curr.1 += 1;
+                self.curr.0 -= 1;
             };
         }
 
