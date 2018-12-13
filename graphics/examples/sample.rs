@@ -56,7 +56,7 @@ fn main() -> Result<(), Box<Error>> {
     Circle::new((127.0 * 1.0 / 4.0, 127.0 * 1.0 / 4.0), 127.0 / 8.0)
         .render_with(image_buffer, |_| Rgba([0, 255, 0, 255]));
 
-    image_buffer.save("sample.png")?;
+    image_buffer.save("../sample.png")?;
 
     Ok(())
 }
