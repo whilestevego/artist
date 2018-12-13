@@ -3,7 +3,7 @@ use std::error::Error;
 use graphics::*;
 use image::{ImageBuffer, Rgba, RgbaImage};
 
-// TODO: Move me to examples
+/// This example generates the sample image shown in the readme.md.
 fn main() -> Result<(), Box<Error>> {
     let image_buffer: &mut RgbaImage = &mut ImageBuffer::new(128, 128);
     // Draw white pixels on entire image buffer
