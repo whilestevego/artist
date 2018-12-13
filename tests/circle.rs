@@ -47,7 +47,7 @@ fn it_draws_a_circle_centered_origin() {
 }
 
 #[test]
-fn it_creates_diagonal_line_less_than_45_deg() {
+fn it_draws_a_circle_in_the_first_quadrant() {
     let points = generate_circle_points((2.0, 2.0), 2.0);
     assert_eq!(
         vec![
