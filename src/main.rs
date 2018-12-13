@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<Error>> {
     let image_buffer: &mut RgbaImage = &mut ImageBuffer::new(128, 128);
     // Draw white pixels on entire image buffer
     for (_x, _y, pixel) in image_buffer.enumerate_pixels_mut() {
-        *pixel = Rgba([255, 255, 255, 255])
+        *pixel = Rgba([0, 0, 0, 255])
     }
 
     PolyLine::new(vec![
@@ -17,6 +17,15 @@ fn main() -> Result<(), Box<Error>> {
         (127.0, 127.0),
         (0.0, 127.0),
         (0.0, 0.0),
+    ])
+    .render_with(image_buffer, |_| Rgba([255, 0, 0, 255]));
+
+    PolyLine::new(vec![
+        (1.0, 1.0),
+        (126.0, 1.0),
+        (126.0, 126.0),
+        (1.0, 126.0),
+        (1.0, 1.0),
     ])
     .render_with(image_buffer, |_| Rgba([255, 0, 0, 255]));
 
@@ -40,6 +49,12 @@ fn main() -> Result<(), Box<Error>> {
 
     Circle::new((127.0 / 2.0, 127.0 / 2.0), 127.0 / 4.0)
         .render_with(image_buffer, |_| Rgba([255, 0, 255, 255]));
+
+    Circle::new((127.0 * 3.0 / 4.0, 127.0 * 1.0 / 4.0), 127.0 / 8.0)
+        .render_with(image_buffer, |_| Rgba([0, 255, 0, 255]));
+
+    Circle::new((127.0 * 1.0 / 4.0, 127.0 * 1.0 / 4.0), 127.0 / 8.0)
+        .render_with(image_buffer, |_| Rgba([0, 255, 0, 255]));
 
     image_buffer.save("sample.png")?;
 
