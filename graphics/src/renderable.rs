@@ -27,6 +27,7 @@ where
     }
 }
 
+impl Renderable for Circle {}
+impl Renderable for Ellipse {}
 impl Renderable for Line {}
 impl Renderable for PolyLine {}
-impl Renderable for Circle {}
