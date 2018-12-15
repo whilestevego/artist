@@ -15,20 +15,6 @@ impl Circle {
     }
 }
 
-impl Plotable for Circle {
-    fn plot(self) -> Plot {
-        let curr = Point(self.radius as i32, 0);
-        let p = 1 - self.radius as i32;
-
-        Box::new(CirclePlot {
-            curr,
-            origin: self.origin.into(),
-            p,
-            point_buffer: Vec::with_capacity(7),
-        })
-    }
-}
-
 // Circle Quadrants
 //
 //           +Y (y,x)
@@ -44,6 +30,21 @@ impl Plotable for Circle {
 //       /    |    \
 //      /  4  |  3  \
 //            -Y
+
+/// Implements Midpoint Circle Algorithm
+impl Plotable for Circle {
+    fn plot(self) -> Plot {
+        let curr = Point(self.radius as i32, 0);
+        let p = 1 - self.radius as i32;
+
+        Box::new(CirclePlot {
+            curr,
+            origin: self.origin.into(),
+            p,
+            point_buffer: Vec::with_capacity(7),
+        })
+    }
+}
 
 pub struct CirclePlot {
     curr: Point<i32>,
