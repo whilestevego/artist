@@ -2,15 +2,15 @@ use crate::*;
 
 #[derive(Clone, Debug, Default)]
 pub struct Ellipse {
-    origin: Vector,
-    radii: (f32, f32),
+    center: Vector,
+    radius: (f32, f32),
 }
 
 impl Ellipse {
-    pub fn new(origin: impl Into<Vector>, radii: (f32, f32)) -> Self {
+    pub fn new(center: impl Into<Vector>, radius: (f32, f32)) -> Self {
         Self {
-            origin: origin.into(),
-            radii,
+            center: center.into(),
+            radius,
         }
     }
 }
@@ -34,47 +34,28 @@ impl Ellipse {
 /// Implements Midpoint Ellipse Algorith
 impl Plotable for Ellipse {
     fn plot(self) -> Plot {
-        let Ellipse {
-            radii: (rx, ry), ..
-        } = self;
-        let curr = Point(0, ry as i32);
-        let rx_sq = rx.powf(2.0);
-        let ry_sq = ry.powf(2.0);
-        let two_rx_sq = 2.0 * rx_sq;
-        let two_ry_sq = 2.0 * ry_sq;
-        let py = two_rx_sq * ry;
-
-        // Decision parameter for quadrant 0
-        let p = ry_sq - rx_sq * ry + 0.25 * rx_sq;
+        let Ellipse { center, radius } = self;
+        let e2 = radius.1 * radius.1;
+        let err = -radius.0 * (2.0 * e2 - radius.0) + e2;
 
         Box::new(EllipsePlot {
-            curr,
-            origin: self.origin.into(),
-            p: p.round() as i32,
-            px: 0,
-            py: py.round() as i32,
+            curr: Point(-radius.0 as i32, 0),
+            e2: e2 as i32,
+            err: err as i32,
+            radius: (radius.0 as i32, radius.1 as i32),
+            center: Point(center.0 as i32, center.1 as i32),
             point_buffer: vec![],
-            quadrant: 0,
-            rx_sq: rx_sq.round() as i32,
-            ry_sq: ry_sq.round() as i32,
-            two_rx_sq: two_rx_sq.round() as i32,
-            two_ry_sq: two_ry_sq.round() as i32,
         })
     }
 }
 
 pub struct EllipsePlot {
+    center: Point<i32>,
     curr: Point<i32>,
-    origin: Point<i32>,
-    p: i32,
-    px: i32,
-    py: i32,
+    e2: i32,
+    err: i32,
     point_buffer: Vec<Point<i32>>,
-    quadrant: i32,
-    rx_sq: i32,
-    ry_sq: i32,
-    two_rx_sq: i32,
-    two_ry_sq: i32,
+    radius: (i32, i32),
 }
 
 impl Iterator for EllipsePlot {
@@ -83,78 +64,53 @@ impl Iterator for EllipsePlot {
     fn next(&mut self) -> Option<Self::Item> {
         let EllipsePlot {
             ref mut curr,
-            ref mut p,
-            ref mut px,
-            ref mut py,
+            ref mut e2,
+            ref mut err,
             ref mut point_buffer,
-            ref mut quadrant,
-            ref origin,
-            ref rx_sq,
-            ref ry_sq,
-            ref two_rx_sq,
-            ref two_ry_sq,
+            ref center,
+            ref radius,
         } = self;
 
-        // Output points in buffer
-        if let Some(next_point) = point_buffer.pop() {
-            return Some(Point(next_point.0 + origin.0, next_point.1 + origin.1));
+        // Flush point buffer
+        if let Some(point) = point_buffer.pop() {
+            return Some(Point(center.0 + point.0, center.1 + point.1));
         }
 
-        if curr.1 < 0 {
+        // Stop iterating
+        if curr.0 > 0 {
             return None;
         }
 
-        // Store mirrored points of all other quadrants in buffer
-        // Quadrant 2 & 3
-        point_buffer.push(Point(curr.0, -curr.1));
-        // Quadrant 4 & 5
+        // 0 & 1 Quadrants
+        let next = Point(center.0 - curr.0, center.1 + curr.1);
+        // 2 & 3 Quadrants
         point_buffer.push(Point(-curr.0, -curr.1));
-        // Quadrant 6 & 7
-        point_buffer.push(Point(-curr.0, curr.1));
+        // 4 & 5 Quadrants
+        point_buffer.push(Point(curr.0, -curr.1));
+        // 6 & 7 Quadrants
+        point_buffer.push(Point(curr.0, curr.1));
 
-        // Set next point
-        let next = Some(Point(curr.0 + origin.0, curr.1 + origin.1));
+        *e2 = 2 * *err;
 
-        match quadrant {
-            0 => {
-                if px < py {
-                    // Quadrant 0
-                    curr.0 += 1;
-                    *px += two_ry_sq;
-
-                    if *p < 0 {
-                        *p += ry_sq + *px;
-                    } else {
-                        *p += ry_sq + *px - *py;
-
-                        curr.1 -= 1;
-                        *py -= two_rx_sq;
-                    };
-                } else {
-                    *p = (*ry_sq as f32 * (curr.0 as f32 + 2.0).powf(2.0)
-                        + *rx_sq as f32 * (curr.1 as f32 - 1.0).powf(2.0)
-                        - *rx_sq as f32 * *ry_sq as f32)
-                        .round() as i32;
-                    *quadrant = 1;
-                }
-            }
-            // TODO: Begin plotting from (0, ry) instead
-            1 => {
-                curr.1 -= 1;
-                *py -= two_rx_sq;
-
-                if *p > 0 {
-                    *p += rx_sq - *py;
-                } else {
-                    *p += rx_sq + *px - *py;
-
-                    curr.0 += 1;
-                    *px += two_ry_sq;
-                };
-            }
-            _ => panic!("Only quadrants 0 & 1 should be reachabled"),
+        if *e2 >= (curr.0 * 2 + 1) * radius.1.pow(2) {
+            curr.0 += 1;
+            *err += (curr.0 * 2 + 1) * radius.1.pow(2);
         }
 
-        next
+        if *e2 <= (curr.1 * 2 + 1) * radius.0.pow(2) {
+            curr.1 += 1;
+            *err += (curr.1 * 2 + 1) * radius.0.pow(2);
+        }
+
+        // TODO: Fix ellipse when radius.0 is less or equal to 1.
+
+        Some(next)
     }
 }
+
+// Algorith Reference:
+// A Rasterizing Algorithm for Drawing Curves
+// Multimedia und Softwareentwicklung
+// Technikum-Wien
+// Alois Zingl
+// Wien, 2012
