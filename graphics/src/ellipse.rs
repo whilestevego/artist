@@ -42,6 +42,7 @@ impl Plotable for Ellipse {
         let ry_sq = ry.powf(2.0);
         let two_rx_sq = 2.0 * rx_sq;
         let two_ry_sq = 2.0 * ry_sq;
+        let py = two_rx_sq * ry;
 
         // Decision parameter for quadrant 0
         let p = ry_sq - rx_sq * ry + 0.25 * rx_sq;
@@ -50,6 +51,8 @@ impl Plotable for Ellipse {
             curr,
             origin: self.origin.into(),
             p: p.round() as i32,
+            px: 0,
+            py: py.round() as i32,
             point_buffer: vec![],
             quadrant: 0,
             rx_sq: rx_sq.round() as i32,
@@ -64,6 +67,8 @@ pub struct EllipsePlot {
     curr: Point<i32>,
     origin: Point<i32>,
     p: i32,
+    px: i32,
+    py: i32,
     point_buffer: Vec<Point<i32>>,
     quadrant: i32,
     rx_sq: i32,
@@ -79,6 +84,8 @@ impl Iterator for EllipsePlot {
         let EllipsePlot {
             ref mut curr,
             ref mut p,
+            ref mut px,
+            ref mut py,
             ref mut point_buffer,
             ref mut quadrant,
             ref origin,
@@ -110,31 +117,39 @@ impl Iterator for EllipsePlot {
 
         match quadrant {
             0 => {
-                if two_ry_sq * curr.0 >= two_rx_sq * curr.1 {
-                    *p = (*ry_sq as f32 * (curr.0 as f32 + 0.5).powf(2.0)
+                if px < py {
+                    // Quadrant 0
+                    curr.0 += 1;
+                    *px += two_ry_sq;
+
+                    if *p < 0 {
+                        *p += ry_sq + *px;
+                    } else {
+                        *p += ry_sq + *px - *py;
+
+                        curr.1 -= 1;
+                        *py -= two_rx_sq;
+                    };
+                } else {
+                    *p = (*ry_sq as f32 * (curr.0 as f32 + 2.0).powf(2.0)
                         + *rx_sq as f32 * (curr.1 as f32 - 1.0).powf(2.0)
                         - *rx_sq as f32 * *ry_sq as f32)
                         .round() as i32;
                     *quadrant = 1;
-                    println!("quadrant = {:?}", quadrant);
-                } else {
-                    // Quadrant 0
-                    curr.0 += 1;
-                    if *p < 0 {
-                        *p += two_ry_sq * curr.0 + ry_sq;
-                    } else {
-                        *p += two_ry_sq * curr.0 - two_rx_sq * curr.1 + ry_sq;
-                        curr.1 -= 1;
-                    };
                 }
             }
+            // TODO: Begin plotting from (0, ry) instead
             1 => {
                 curr.1 -= 1;
+                *py -= two_rx_sq;
+
                 if *p > 0 {
-                    *p += rx_sq - two_rx_sq * curr.1;
+                    *p += rx_sq - *py;
                 } else {
-                    *p += two_ry_sq * curr.0 - two_rx_sq * curr.1 + rx_sq;
+                    *p += rx_sq + *px - *py;
+
                     curr.0 += 1;
+                    *px += two_ry_sq;
                 };
             }
             _ => panic!("Only quadrants 0 & 1 should be reachabled"),
