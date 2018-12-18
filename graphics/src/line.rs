@@ -77,27 +77,37 @@ impl Iterator for LinePlot {
     type Item = Point<i32>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.lead_step.is_negative() {
-            if self.curr.get(&self.lead_axis) < self.last.get(&self.lead_axis) {
+        let LinePlot {
+            ref first,
+            ref mut curr,
+            ref mut p,
+            ref mut two_d,
+            ref mut two_dd,
+            ref trail_axis,
+            ref trail_step,
+            ref lead_step,
+            ref lead_axis,
+            ref last,
+        } = self;
+
+        if lead_step.is_negative() {
+            if curr.get(lead_axis) < last.get(lead_axis) {
                 return None;
             }
-        } else if self.curr.get(&self.lead_axis) > self.last.get(&self.lead_axis) {
+        } else if curr.get(lead_axis) > last.get(lead_axis) {
             return None;
         };
 
-        let next = Some(Point(
-            self.curr.0 + self.first.0,
-            self.curr.1 + self.first.1,
-        ));
+        let next = Some(Point(curr.0 + first.0, curr.1 + first.1));
 
-        *self.curr.get_mut(&self.lead_axis) += self.lead_step;
+        *curr.get_mut(lead_axis) += lead_step;
 
-        if self.two_d != 0 {
-            if self.p.is_negative() {
-                self.p += self.two_d;
+        if *two_d != 0 {
+            if p.is_negative() {
+                *p += *two_d;
             } else {
-                *self.curr.get_mut(&self.trail_axis) += self.trail_step;
-                self.p += self.two_dd;
+                *curr.get_mut(trail_axis) += trail_step;
+                *p += *two_dd;
             }
         }
 
@@ -105,7 +115,7 @@ impl Iterator for LinePlot {
     }
 }
 
-/* 
+/*
 
 Computer Graphics, C Version, 2/e (Page 100)
 
