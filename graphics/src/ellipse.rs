@@ -31,7 +31,14 @@ impl Ellipse {
 //      /  4  |  3  \
 //            -Y
 
-/// Implements Midpoint Ellipse Algorith
+/// Implements Midpoint Ellipse Algorithm
+///
+/// Algorith Reference:
+/// A Rasterizing Algorithm for Drawing Curves
+/// Multimedia und Softwareentwicklung
+/// Technikum-Wien
+/// Alois Zingl
+/// Wien, 2012
 impl Plotable for Ellipse {
     fn plot(self) -> Plot {
         let Ellipse { center, radius } = self;
@@ -107,10 +114,3 @@ impl Iterator for EllipsePlot {
         Some(next)
     }
 }
-
-// Algorith Reference:
-// A Rasterizing Algorithm for Drawing Curves
-// Multimedia und Softwareentwicklung
-// Technikum-Wien
-// Alois Zingl
-// Wien, 2012
