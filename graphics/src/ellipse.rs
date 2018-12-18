@@ -97,6 +97,7 @@ impl Iterator for EllipsePlot {
         // 6 & 7 Quadrants
         point_buffer.push(Point(curr.0, curr.1));
 
+        // Calculate next point and update err
         *e2 = 2 * *err;
 
         if *e2 >= (curr.0 * 2 + 1) * radius.1.pow(2) {
